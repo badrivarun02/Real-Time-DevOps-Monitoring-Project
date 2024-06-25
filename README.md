@@ -92,12 +92,12 @@ Let’s explore the scenarios we’re monitoring:
    ```    
   Inside the playbook, I've specified role names, so it uninstalls packages like:
 
-   - `prometheus_install`
-   - `alertmanager_install`
-   - `nodeExp_install`
-   - `blackboxExp_install`
-   - `maven_install`
-   - `java_install`
+   - `prometheus_uninstall`
+   - `alertmanager_uninstall`
+   - `nodeExp_uninstall`
+   - `blackboxExp_uninstall`
+   - `maven_uninstall`
+   - `java_uninstall`
    
 
       NOTE:
@@ -135,7 +135,7 @@ Before you get started, make sure you have the following installed:
 
 4. After building, you'll find the JAR file in the `target` folder. To run the project, use:
    ```sh
-   java -jar target/java_package.jar
+   java -jar ./target/database_service_project-0.0.4.jar
    ```
 
 ## Usage
