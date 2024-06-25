@@ -1,0 +1,63 @@
+---
+# tasks file for blackboxExp_install
+    - name: Update APT package manager repositories cache
+      apt:
+        update_cache: yes
+
+    - name: Download Blackbox Exporter
+      get_url:
+        url: "{{ blackbox_exporter_download_url }}"
+        dest: "{{ blackbox_exporter_download_dir }}"
+
+    - name: Extract Blackbox Exporter archive
+      unarchive:
+        src: "{{ blackbox_exporter_download_dir }}/blackbox_exporter-{{ blackbox_exporter_version }}.linux-amd64.tar.gz"
+        dest: "{{ blackbox_exporter_download_dir }}"
+        remote_src: yes
+
+    - name: Create blackbox user and group
+      block:
+       - name: Add the blackbox group
+         group:
+          name: blackbox
+          system: yes
+
+       - name: Add the blackbox user
+         user:
+          name: blackbox
+          group: blackbox
+          shell: /bin/false
+          create_home: no 
+    - name: Ensure /etc/blackbox directory exists
+      file:
+        path: /etc/blackbox
+        state: directory
+        mode: '0755'
+    - name: Copy blackbox binary and blackbox configuration file
+      ansible.builtin.copy:
+       src: "{{ item.src }}"
+       dest: "{{ item.dest }}"
+       owner: blackbox
+       group: blackbox
+       mode: '0755'
+      loop:
+       - src: "{{ blackbox_exporter_extract_dir }}/blackbox_exporter"
+         dest: "{{ blackbox_exporter_bin_dir }}"
+       - src: "{{ blackbox_exporter_extract_dir }}/blackbox.yml"
+         dest: "/etc/blackbox/blackbox.yml"
+
+    - name: Create Blackbox Exporter service
+      template:
+        src: roles/blackboxExp_install/templates/{{blackboxsvc}}.j2
+        dest: /etc/systemd/system/{{blackboxsvc}}
+
+    - name: Reload systemd daemon
+      systemd:
+        daemon_reload: yes
+
+    - name: Enable and start Blackbox Exporter service
+      systemd:
+        name: blackbox_exporter
+        enabled: yes
+        state: started
+

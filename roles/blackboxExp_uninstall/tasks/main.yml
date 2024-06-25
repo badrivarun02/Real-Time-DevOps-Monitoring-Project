@@ -1,0 +1,59 @@
+---
+# tasks file for blackboxExp_uninstall
+    - name: Include variables from file
+      include_vars:
+         file: ./roles/blackboxExp_install/vars/main.yml
+# Stop and disable the service (if running)
+    - name: Stop blackbox service (if running)
+      service:
+        name: blackbox_exporter
+        state: stopped
+
+    - name: Disable blackbox_exporter service
+      service:
+        name: blackbox_exporter
+        enabled: no
+
+    # Reload systemd daemon
+    - name: Reload systemd daemon
+      systemd:
+        daemon_reload: yes
+
+    # Delete blackbox_exporter directories and configuration file
+    - name: Delete blackbox_exporter directories
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/blackbox
+        - /var/lib/blackbox
+
+    # Delete blackbox_exporter binaries (optional)
+    - name: Delete blackbox_exporter binaries (optional)
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ blackbox_exporter_bin_dir }}/blackbox_exporter"
+        - "/etc/systemd/system/{{ blackboxsvc }}"
+        - "{{ blackbox_exporter_download_dir }}/blackbox_exporter-{{ blackbox_exporter_version }}.linux-amd64.tar.gz"
+        - "{{ blackbox_exporter_download_dir }}/blackbox_exporter-{{ blackbox_exporter_version }}.linux-amd64"
+        
+
+    # Remove blackbox_exporter user and group
+    - name: Remove blackbox user and group (direct deletion)
+      block:
+       - name: Remove blackbox user
+         user:
+          name: blackbox
+          state: absent
+
+       - name: Remove blackbox group
+         group:
+          name: blackbox
+          state: absent
+    # check any files remains
+    - name: Check for leftover packages using dpkg (informational)
+      debug:
+        msg: "dpkg query -l alertmanager will show any remaining packages"
+

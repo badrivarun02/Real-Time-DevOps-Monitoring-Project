@@ -1,0 +1,13 @@
+---
+- name: Deploy package using role on remote host
+  hosts: Allhost
+  become: true
+  roles:
+    - prometheus_uninstall
+    - alertmanager_uninstall
+    - nodeExp_uninstall
+    - blackboxExp_uninstall
+    - maven_uninstall
+    - java_uninstall
+      
+      

@@ -1,0 +1,14 @@
+---
+- name: Deploy package using role on remote host
+  hosts: Allhost
+  become: true
+  roles:
+    - prometheus_install
+    - alertmanager_install
+    - nodeExp_install
+    - blackboxExp_install
+    - maven_install
+    - java_install
+    - configcopy
+      
+      
