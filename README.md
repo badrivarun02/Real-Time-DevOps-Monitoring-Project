@@ -53,7 +53,8 @@ Let’s explore the scenarios we’re monitoring:
      4. Blackbox Exporter 🔍
      5. Maven 🌐
      6. Java ☕
-     7. Ubuntu in WSL under Windows 10 🐧
+     7. Gmail Credential 🔑
+     8. Ubuntu in WSL under Windows 10 🐧
      
 # **Project Setup** 🚀
 
@@ -85,7 +86,42 @@ Let’s explore the scenarios we’re monitoring:
    1. Within the `configcopy` role, you’ll find directories and navigate `files` folder containing essential configurations such as `alert_rules.yml`, `alertmanager.yml`, and `prometheus.yml`. These files are designed to be copied to specific locations based on the instructions provided in the `tasks/main.yml` file.
   
    2. In the `alertmanager.yml` file, make sure to edit the Gmail user ID and password according to your specific use case.If any other changes are necessary in the remaining configuration files, update them accordingly. By utilizing the `configcopy` role in your playbook, these changes will automatically propagate and trigger restarts of the relevant applications.
-  
+
+## **Why App Passwords Matter**
+
+Before diving into the technical details, let's address the importance of app-specific passwords. If use 2-step verification for Google account, some mail clients may struggle to handle verification codes. App-specific passwords come to the rescue by allowing secure access to mail account without compromising security.
+
+## **Setting Up App Passwords**🔐
+
+Follow these steps to create an app-specific password for Google account:
+
+a. **Access Your Google Account:**
+   - Navigate to your Google Account settings.
+   - Click on "Security" in the left panel.
+
+b. **App Passwords:**
+   - Look for the "Signing in to Google" tab.
+   - If you don't see the "App Passwords" option, consider the following:
+     - Two-step verification might not be set up for your account.
+     - Two-step verification could be configured for security keys only.
+     - Your account might be associated with work, school, or another organization.
+     - Advanced Protection could be enabled for your account.
+   - If the option is not see, proceed to the next step.
+
+c. **Creating an App-Specific Password:**
+   - Search for "App Passwords" (you can use the search bar).
+   - Sign in with your existing credentials.
+   - On the "App Passwords" page, you'll find the option to create a new app-specific password.
+   - Choose a descriptive name for your password (e.g., "Testing," "General Use").
+   - Click "Create."
+   - A unique app-specific password will be generated. Keep this secure; you won't need to remember it.
+
+d. **Integration with AlertManager:**
+   - In this project, store this app-specific password along with Gmail ID.
+   - When configuring AlertManager, use this password to enable email notifications for alerts.
+
+Remember that we will likely use this app-specific password only once during the initial setup. It ensures smooth communication between monitoring tools and Gmail account.
+
 4. Ansible Command to uninstall:
    ```sh
    ansible-playbook -i inventory.ini uninstall_playbook.yml
