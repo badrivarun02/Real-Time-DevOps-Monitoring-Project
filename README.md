@@ -47,14 +47,9 @@ Let’s explore the scenarios we’re monitoring:
   ![](Images/Real-Time-DevOps-Monitoring-Projec.drawio.svg)
   
 ## **Prerequisites**
-     1. Prometheus 🚀
-     2. AlertManager 🚨
-     3. Node Exporter 📊
-     4. Blackbox Exporter 🔍
-     5. Maven 🌐
-     6. Java ☕
-     7. Gmail Credential 🔑
-     8. Ubuntu in WSL under Windows 10 🐧
+     1. 🤖 Ansible
+     2. 🐧 Ubuntu on WSL (Windows Subsystem for Linux)
+    
      
 # **Project Setup** 🚀
 
