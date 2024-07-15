@@ -43,12 +43,11 @@ Let’s explore the scenarios we’re monitoring:
     - It groups related alerts (e.g., multiple VMs down) and deduplicates them.
     - Alert Manager routes alerts to configured receivers (e.g., email, webhook).
     - We receive timely notifications based on severity.
-
-  <div align="center">
+      
+    <div align="center">
   <img alt="Real-Time-DevOps-Monitoring-Project" src="Images/Real-Time-DevOps-Monitoring-Projec.drawio.svg" ><br>
   <sup> Real-Time-DevOps-Monitoring-Project <sup>
   </div>
-  
   
 ## **Prerequisites**
      1. 🤖 Ansible
@@ -57,15 +56,15 @@ Let’s explore the scenarios we’re monitoring:
      
 # **Project Setup** 🚀
 
-1. Clone the Git repository:
+1. **Clone the Git repository:**
    ```sh
    git clone https://github.com/badrivarun02/Real-Time-DevOps-Monitoring-Project.git
    ```
-2. Navigate to the Real-Time-DevOps-Monitoring-Project folder:
+2. **Navigate to the Real-Time-DevOps-Monitoring-Project folder:**
    ```sh
    cd Real-Time-DevOps-Monitoring-Project
    ```  
-3. Install the Package using Ansible Playbook:
+3. **Install the Package using Ansible Playbook:**
 
    Ansible Command to install:
    ```sh
@@ -79,20 +78,114 @@ Let’s explore the scenarios we’re monitoring:
    - `blackboxExp_install`
    - `maven_install`
    - `java_install`
+
+4. **Launching the Applications:**
+   After installing the packages, follow these steps to launch the applications:
+
+   - **Prometheus:**
+     Access Prometheus using the following URL: [http://localhost:9090](http://localhost:9090)
+
+   - **NodeExporter:**
+     Use this URL to access NodeExporter: [http://localhost:9100](http://localhost:9100)
+
+   - **BlackBox Exporter:**
+     Access BlackBox Exporter via: [http://localhost:9115](http://localhost:9115)
+
+   - **Alertmanager:**
+     Access Alertmanager at: [http://localhost:9093](http://localhost:9093)
+
+---
+# **Boardgame Project**🎲
+
+## **Description**
+The Boardgame project is a web application that allows users to clone a Git repository and build it using Maven. It provides a fun and interactive experience related to board games.
+
+## **Prerequisites**
+Before you get started, make sure you have the following installed:
+- **Maven 3.9.6** or later
+- **Java (openjdk-17-jre-headless)** or the latest version
+
+## **Installation**
+1. **Clone the Git repository:**
+
+   ```bash
+   git clone https://github.com/jaiswaladi246/Boardgame.git
+   ```
+
+2. **Navigate to the `Boardgame` folder:**
+   ```sh
+   cd Boardgame
+   ```
+
+3. **Build the project using Maven:**
+   ```sh
+   mvn package
+   ```
+
+4. **After building, you'll find the JAR file in the `target` folder. To run the project, use:**
+   ```sh
+   java -jar ./target/database_service_project-0.0.4.jar
+   ```
+
+5. **Accessing the Web Application:**
+
+   - To access the web application, open a web browser and navigate to the following URL: [http://localhost:8080](http://localhost:8080).
+   - The default port for the application is 8080.
+
+## **Custom Port Configuration**
+
+If you need to specify a specific port for your Java application, use the `--server.port` option followed by the desired port number. For example:
+
+```bash
+java -jar ./target/database_service_project-0.0.4.jar --server.port=8020
+```
+- Explore the board game features and enjoy!😊
+   
+---
+# **Configuration Steps**
+
+1. **Alert Rules Configuration:**
+   - Add the [alert_rules.yml][another-file] to the Prometheus directory.
+   
+   [another-file]: roles/configcopy/files/alert_rules.yml
+   - This file contains specific rules for alerting.
+
+2. **Prometheus Configuration:**
+   - Edit the Prometheus configuration file [prometheus.yml][another-file2]
+
+   [another-file2]: roles/configcopy/files/prometheus.yml
+     - Add the Alertmanager URL.
+     - Include the rules file (`alert_rules.yml`).
+     - Define job names (e.g., `NodeExporter`, `BlackBox Exporter`) under scrape configurations.
+     - Ensure the website URL is configured for BlackBox Exporter.
+
+4. **Alertmanager Configuration:**
+   - In the [alertmanager.yml][another-file3], update the Gmail user ID and password according to your specific use case.
+
+   [another-file3]: roles/configcopy/files/alertmanager.yml
+     
+
+### Deployment and Verification:
+
+After editing these files, they should be copied to specific locations based on the instructions provided in the `tasks/main.yml` file under the `configcopy` role. By utilizing the `configcopy` role in your playbook, these changes will automatically propagate and trigger restarts of the relevant applications.
+
+To apply the changes, run the following command:
+```sh
+ansible-playbook -i inventory.ini configfile_playbook.yml
+```
+Inside the playbook, I've specified role names, like:
+
    - `configcopy`
+     
+Finally, verify that the rules and targets are correctly added/configured in the Prometheus tool.
 
-   NOTE:
-   1. Within the `configcopy` role, you’ll find directories and navigate `files` folder containing essential configurations such as `alert_rules.yml`, `alertmanager.yml`, and `prometheus.yml`. These files are designed to be copied to specific locations based on the instructions provided in the `tasks/main.yml` file.
-  
-   2. In the `alertmanager.yml` file, make sure to edit the Gmail user ID and password according to your specific use case.If any other changes are necessary in the remaining configuration files, update them accordingly. By utilizing the `configcopy` role in your playbook, these changes will automatically propagate and trigger restarts of the relevant applications.
-
-## **Why App Passwords Matter**
+---
+## **Setting Up App Passwords**🔐
+ ### **Why App Passwords Matter**🤔
 
 Before diving into the technical details, let's address the importance of app-specific passwords. If use 2-step verification for Google account, some mail clients may struggle to handle verification codes. App-specific passwords come to the rescue by allowing secure access to mail account without compromising security.
 
-## **Setting Up App Passwords**🔐
-
-Follow these steps to create an app-specific password for Google account:
+#### **Follow these steps to create an app-specific password for Google account:**
 
 a. **Access Your Google Account:**
    - Navigate to your Google Account settings.
@@ -121,75 +214,31 @@ d. **Integration with AlertManager:**
 
 Remember that we will likely use this app-specific password only once during the initial setup. It ensures smooth communication between monitoring tools and Gmail account.
 
-4. Ansible Command to uninstall:
-   ```sh
-   ansible-playbook -i inventory.ini uninstall_playbook.yml
-   ```    
-  Inside the playbook, I've specified role names, so it uninstalls packages like:
-
-   - `prometheus_uninstall`
-   - `alertmanager_uninstall`
-   - `nodeExp_uninstall`
-   - `blackboxExp_uninstall`
-   - `maven_uninstall`
-   - `java_uninstall`
-   
-
-      NOTE:
-   1. When uninstalling `Prometheus` and `Alertmanager` packages, there’s no need to mention the `configcopy` role explicitly. This role handles file copying, and any files it copied will automatically be removed during the uninstallation process. 
-       
-     
-
-
-# **Boardgame Project**🎲
-
-## **Description**
-The Boardgame project is a web application that allows users to clone a Git repository and build it using Maven. It provides a fun and interactive experience related to board games.
-
-## **Prerequisites**
-Before you get started, make sure you have the following installed:
-- **Maven 3.9.6** or later
-- **Java (openjdk-17-jre-headless)** or the latest version
-
-## **Installation**
-1. Clone the Git repository:
-
-   ```bash
-   git clone https://github.com/jaiswaladi246/Boardgame.git
-   ```
-
-2. Navigate to the `Boardgame` folder:
-   ```sh
-   cd Boardgame
-   ```
-
-3. Build the project using Maven:
-   ```sh
-   mvn package
-   ```
-
-4. After building, you'll find the JAR file in the `target` folder. To run the project, use:
-   ```sh
-   java -jar ./target/database_service_project-0.0.4.jar
-   ```
-
-## Usage
-- Access the web application by opening a browser and navigating to the appropriate URL.
-- Explore the board game features and enjoy!
+---
 
 # **Testing the Project**
 
-1. **Stop Node Exporter:**
-  
+### Stopping Node Exporter
+
+1. **Stop Node Exporter Service:**
    Execute the following command to stop the Node Exporter service:
-     ```sh
-     sudo systemctl stop node_exporter.service
-     ```
+   ```sh
+   sudo systemctl stop node_exporter.service
+   ```
+
+### Terminating the Boardgame Website
 
 2. **Terminate the Boardgame Website:**
+   - Press Ctrl + C in the terminal where the Boardgame website is running.
+   - This will stop the website.
 
-   Press Ctrl + C in the terminal where the Boardgame website is running.
-After stopping the website, check the alerts in Prometheus.
+### Checking Alerts
+
+3. **Verify Alerts:**
+   - Check alerts under the Prometheus tool.
+   - Also, review alerts in Alertmanager.
+   - Alertmanager will send notifications via Gmail, which we set up and configured in the alertmanager configuration file.
+   - Verify that the email notifications are received in your Gmail inbox.
 
 # **Pro Tips: Configuration Validation for Prometheus, Node Exporter and AlertManager**🔍
 
@@ -224,7 +273,26 @@ Run the following command to validate your AlertManager configuration file (aler
    ```
 
    If the configuration is valid, you’re good to go. Otherwise, it will provide details on any issues.
+
+# **Teardown**
+Ansible Command to uninstall:
+   ```sh
+   ansible-playbook -i inventory.ini uninstall_playbook.yml
+   ```    
+  Inside the playbook, I've specified role names, so it uninstalls packages like:
+
+   - `prometheus_uninstall`
+   - `alertmanager_uninstall`
+   - `nodeExp_uninstall`
+   - `blackboxExp_uninstall`
+   - `maven_uninstall`
+   - `java_uninstall`
    
+
+  #### NOTE:
+   1. When uninstalling `Prometheus` and `Alertmanager` packages, there’s no need to mention the `configcopy` role explicitly. This role handles file copying, and any files it copied will automatically be removed during the uninstallation process. 
+       
+    
 # **Learning Resources** 📚
 
 I drew insights from the following blogs during my DevOps monitoring project:
@@ -242,7 +310,3 @@ Additionally, I leveraged the power of Copilot AI and Gemini AI tools to fine-tu
 # **Acknowledgments:** 🔗
 
 Huge thanks to the DevOps community, the creators of the DevOps Shack series, and the supportive teams at Copilot AI and Gemini AI. Your contributions have been invaluable! 🙌
-
-
-
-
