@@ -45,10 +45,10 @@ Let’s explore the scenarios we’re monitoring:
     - We receive timely notifications based on severity.
 
   <div align="center">
-  <img alt="Real-Time-DevOps-Monitoring-Project" src="Images/Real-Time-DevOps-Monitoring-Projec.drawio.svg" width="400" height="100"><br>
-  <sup>Sample display of image in HTML format <sup>
+  <img alt="Real-Time-DevOps-Monitoring-Project" src="Images/Real-Time-DevOps-Monitoring-Projec.drawio.svg" ><br>
+  <sup> Real-Time-DevOps-Monitoring-Project <sup>
   </div>
-  ![](Images/Real-Time-DevOps-Monitoring-Projec.drawio.svg)
+  
   
 ## **Prerequisites**
      1. 🤖 Ansible
