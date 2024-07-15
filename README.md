@@ -43,7 +43,11 @@ Let’s explore the scenarios we’re monitoring:
     - It groups related alerts (e.g., multiple VMs down) and deduplicates them.
     - Alert Manager routes alerts to configured receivers (e.g., email, webhook).
     - We receive timely notifications based on severity.
-      
+
+  <div align="center">
+  <img alt="Real-Time-DevOps-Monitoring-Project" src="Images/Real-Time-DevOps-Monitoring-Projec.drawio.svg" width="400" height="100"><br>
+  <sup>Sample display of image in HTML format <sup>
+  </div>
   ![](Images/Real-Time-DevOps-Monitoring-Projec.drawio.svg)
   
 ## **Prerequisites**
