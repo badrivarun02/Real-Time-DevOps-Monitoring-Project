@@ -238,8 +238,29 @@ Remember that we will likely use this app-specific password only once during the
    - Check alerts under the Prometheus tool.
    - Also, review alerts in Alertmanager.
    - Alertmanager will send notifications via Gmail, which we set up and configured in the alertmanager configuration file.
-   - Verify that the email notifications are received in your Gmail inbox.
+   - Verify that the email notifications are received in your Gmail inbox, indicating alerts:.
+     - [FIRING:1] WebsiteDown (http://localhost:8080 blackbox critical)
+     - [FIRING:1] InstanceDown (localhost:9100 node_exporter critical)
+     - [FIRING:1] ServiceUnavailable (localhost:9100 node_exporter critical)
 
+## Resolving Alerts
+
+4. **Start NodeExporter and Boardgame Website Again:**
+   - For Start NodeExporter:
+     ``` sh
+     sudo systemctl start node_exporter.service
+     ```
+
+     For Start Boardgame Website: 
+     ```sh
+     java -jar ./target/database_service_project-0.0.4.jar
+     ```                                  
+   - Check the status in Prometheus and Alertmanager.
+   - Confirm that you receive notifications via Gmail, indicating resolved alerts:
+     - [RESOLVED] InstanceDown (localhost:9100 node_exporter critical)
+     - [RESOLVED] ServiceUnavailable (localhost:9100 node_exporter critical)
+     - [RESOLVED] WebsiteDown (http://localhost:8080 blackbox critical)
+       
 # **Pro Tips: Configuration Validation for Prometheus, Node Exporter and AlertManager**🔍
 
 1. **Prometheus Configuration:**
@@ -275,11 +296,11 @@ Run the following command to validate your AlertManager configuration file (aler
    If the configuration is valid, you’re good to go. Otherwise, it will provide details on any issues.
 
 # **Teardown**
-Ansible Command to uninstall:
+1. Ansible Command to uninstall:
    ```sh
    ansible-playbook -i inventory.ini uninstall_playbook.yml
    ```    
-  Inside the playbook, I've specified role names, so it uninstalls packages like:
+    Inside the playbook, I've specified role names, so it uninstalls packages like:
 
    - `prometheus_uninstall`
    - `alertmanager_uninstall`
@@ -287,6 +308,10 @@ Ansible Command to uninstall:
    - `blackboxExp_uninstall`
    - `maven_uninstall`
    - `java_uninstall`
+
+2. Terminate the Boardgame Website:
+  - Press Ctrl + C in the terminal where the Boardgame website is running.
+  - This will stop the website.
    
 
   #### NOTE:
